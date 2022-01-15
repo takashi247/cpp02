@@ -11,7 +11,7 @@ class Fixed
 		int		getRawBits() const;
 		void	setRawBits(int const raw);
 	private:
-		int					fixed_point;
+		int					i_num;
 		static const int	frac_bit = 8;
 };
 

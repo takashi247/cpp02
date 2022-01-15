@@ -2,7 +2,7 @@
 #include <iostream>
 
 Fixed::Fixed():
-	fixed_point(0)
+	i_num(0)
 {
 	std::cout << "Default constructor called" << std::endl;
 }
@@ -21,7 +21,7 @@ Fixed::~Fixed()
 Fixed& Fixed::operator=(const Fixed& fixed)
 {
 	std::cout << "Assignation operator called" << std::endl;
-	this->fixed_point = fixed.getRawBits();
+	this->i_num = fixed.getRawBits();
 	return *this;
 }
 
@@ -29,11 +29,11 @@ int
 	Fixed::getRawBits() const
 {
 	std::cout << "getRawBits member function called" << std::endl;
-	return (this->fixed_point);
+	return (this->i_num);
 }
 
 void
 	Fixed::setRawBits(int const raw)
 {
-	this->fixed_point = raw;
+	this->i_num = raw;
 }
