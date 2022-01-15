@@ -23,7 +23,7 @@ Fixed::Fixed(const float f_num)
 	this->setRawBits(static_cast<int>(roundf(f_val)));
 }
 
-Fixed::Fixed(const Fixed& fixed)
+Fixed::Fixed(const Fixed &fixed)
 {
 	std::cout << "Copy constructor called" << std::endl;
 	*this = fixed;
@@ -34,10 +34,11 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed& Fixed::operator=(const Fixed& fixed)
+Fixed& Fixed::operator=(const Fixed &fixed)
 {
 	std::cout << "Assignation operator called" << std::endl;
-	this->raw_value = fixed.getRawBits();
+	if (this != &fixed)
+		this->raw_value = fixed.getRawBits();
 	return *this;
 }
 
