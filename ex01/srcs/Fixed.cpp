@@ -19,7 +19,7 @@ Fixed::Fixed(const float f_num)
 	std::cout << "Float constructor called" << std::endl;
 	float	f_val = f_num;
 	for (int i = 0; i < this->frac_bit; i++)
-		f_val *= 2.0;
+		f_val *= BASE;
 	this->setRawBits(static_cast<int>(roundf(f_val)));
 }
 
