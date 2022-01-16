@@ -93,7 +93,12 @@ Fixed
 	Fixed::operator*(const Fixed &rhs) const
 {
 	Fixed	tmp;
-	tmp.setRawBits((this->getRawBits() * rhs.getRawBits()) >> this->frac_bit);
+	long long	new_raw_value = static_cast<long long>(this->getRawBits()) * \
+	static_cast<long long>(rhs.getRawBits());
+	if (new_raw_value < 0 && new_raw_value & EIGHT_BIT_MASK)
+		new_raw_value += 1 << this->frac_bit;
+	new_raw_value = new_raw_value >> this->frac_bit;
+	tmp.setRawBits(static_cast<int>(new_raw_value));
 	return (tmp);
 }
 
@@ -102,7 +107,12 @@ Fixed
 {
 	Fixed	tmp;
 	if (rhs.getRawBits() != 0)
-		tmp.setRawBits((this->getRawBits() / rhs.getRawBits()) << this->frac_bit);
+	{
+		if (rhs.getRawBits() & EIGHT_BIT_MASK)
+			tmp.setRawBits((this->getRawBits() << this->frac_bit) / rhs.getRawBits());
+		else
+			tmp.setRawBits(this->getRawBits() / (rhs.getRawBits() >> this->frac_bit));
+	}
 	return (tmp);
 }
 

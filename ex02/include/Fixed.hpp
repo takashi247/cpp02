@@ -5,6 +5,9 @@
 
 class Fixed
 {
+	private:
+		int					raw_value;
+		static const int	frac_bit = 8;
 	public:
 		Fixed();
 		Fixed(const int i_num);
@@ -35,9 +38,8 @@ class Fixed
 		float				toFloat(void) const;
 		int					toInt(void) const;
 		static const int	BASE = 2;
-	private:
-		int					raw_value;
-		static const int	frac_bit = 8;
+		static const int	HALF = 1 << (frac_bit - 1);
+		static const int	EIGHT_BIT_MASK = 255;
 };
 
 std::ostream &operator<<(std::ostream &os, const Fixed &fixed);
