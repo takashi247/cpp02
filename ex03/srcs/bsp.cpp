@@ -5,7 +5,7 @@ bool
 {
 	if (abc == 0 || abp == 0 || bcp == 0 || cap == 0)
 		return (false);
-	if (abc == abp + bcp + cap)
+	if (abc >= abp + bcp + cap)
 		return (true);
 	else
 		return (false);

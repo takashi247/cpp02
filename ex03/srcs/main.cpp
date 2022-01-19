@@ -6,10 +6,10 @@
 int
 	main()
 {
-	Point	a(1.3, 2.5);
-	Point	b(3.4, -2.9);
-	Point	c(1.5, 4.3);
-	Point	p(2.5, 1.4);
+	Point	a(0, 3);
+	Point	b(1.5, 0);
+	Point	c(-1.5, 0);
+	Point	p(0, 2.99);
 	bool	res;
 
 	std::cout << "a(" << a.getX() << ", " << a.getY() << ")" << std::endl;
