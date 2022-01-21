@@ -24,6 +24,24 @@ Point
 	return (*this);
 }
 
+Point
+	Point::operator+(const Point &rhs) const
+{
+	Point	tmp;
+	tmp.setX(this->getX() + rhs.getX());
+	tmp.setY(this->getY() + rhs.getY());
+	return (tmp);
+}
+
+Point
+	Point::operator-(const Point &rhs) const
+{
+	Point	tmp;
+	tmp.setX(this->getX() - rhs.getX());
+	tmp.setY(this->getY() - rhs.getY());
+	return (tmp);
+}
+
 Fixed const
 	&Point::getX() const
 {
