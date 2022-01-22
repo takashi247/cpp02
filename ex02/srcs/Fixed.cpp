@@ -1,6 +1,7 @@
 #include "Fixed.hpp"
 #include <iostream>
 #include <cmath>
+const std::string	Fixed::OVERFLOW_ERROR_MSG = "Error: Integer overflow occurred";
 
 Fixed::Fixed():
 	raw_value(0)

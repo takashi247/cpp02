@@ -6,8 +6,7 @@
 class Fixed
 {
 	private:
-		int					raw_value;
-		static const int	frac_bit = 8;
+		static const std::string	OVERFLOW_ERROR_MSG;
 	public:
 		Fixed();
 		Fixed(const int i_num);
