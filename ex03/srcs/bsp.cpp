@@ -14,11 +14,11 @@ bool
 Fixed
 	computeArea(Point const a, Point const b, Point const c)
 {
-	Fixed	area = (a.getX() * (b.getY() - c.getY()) + b.getX() * (c.getY() - \
-	a.getY()) + c.getX() * (a.getY() - b.getY())) / Fixed(2);
+	Fixed	area = ((a.getX() - c.getX()) * (b.getY() - c.getY()) - \
+	(b.getX() - c.getX()) * (a.getY() - c.getY()));
 	if (area < 0)
 		area = area * Fixed(-1);
-	return (area);
+	return (area / Fixed(2));
 }
 
 // bool
@@ -51,6 +51,7 @@ bool
 	std::cout << "area of tri_abp: " << tri_abp << std::endl;
 	std::cout << "area of tri_bcp: " << tri_bcp << std::endl;
 	std::cout << "area of tri_cap: " << tri_cap << std::endl;
+	std::cout << "tri_abp + tri_bcp + tri_cap = " << tri_abp + tri_bcp + tri_cap << std::endl;
 	return (isInside(tri_abc, tri_abp, tri_bcp, tri_cap));
 	// Fixed	cross_prod_ap = computeCrossProd(a, b, point);
 	// Fixed	cross_prod_bp = computeCrossProd(b, c, point);
