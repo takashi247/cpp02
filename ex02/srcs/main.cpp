@@ -1,6 +1,7 @@
 #include "Fixed.hpp"
 #include <iostream>
 #include <iomanip>
+#include <climits>
 
 void
 	test(std::string info, const Fixed a)
@@ -24,7 +25,27 @@ int
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
 
+	a.setRawBits(INT_MAX);
+	std::cout << a << std::endl;
+	a.setRawBits(INT_MIN);
+	std::cout << a << std::endl;
+	// a.setRawBits(INT_MAX + 1);
+	// std::cout << a << std::endl;
+	// a.setRawBits(INT_MIN - 1);
+	// std::cout << a << std::endl;
+	int	raw = INT_MAX;
+	++raw;
+	a.setRawBits(raw);
+	std::cout << a << std::endl;
+	raw = INT_MIN;
+	--raw;
+	a.setRawBits(raw);
+	std::cout << a << std::endl;
+	a = Fixed(1 << 23);
+	std::cout << a << std::endl;
+
 	std::cout << std::endl;
+
 	test("2 / 3", Fixed(2) / Fixed(3));
 	test("2 / 0", Fixed(2) / Fixed(0));
 	test("3 / 2", Fixed(3) / Fixed(2));
@@ -72,6 +93,10 @@ int
 	test("0.1 - -1.3", Fixed(0.1f) - Fixed(-1.3f));
 	test("10 - 5.33", Fixed(10) - Fixed(5.33f));
 	test("10 + 5.33", Fixed(10) + Fixed(5.33f));
+	test("INT_MAX >> 8 + 1", Fixed(INT_MAX >> 8) + Fixed(1));
+	test("INT_MIN >> 8 - 1", Fixed(INT_MIN >> 8) - Fixed(1));
+	test("INT_MAX >> 8 - -1", Fixed(INT_MAX >> 8) - Fixed(-1));
+	test("INT_MIN >> 8 + -1", Fixed(INT_MIN >> 8) + Fixed(-1));
 	test("0x400001 * 1.33", Fixed(0x400001) * Fixed(1.33f));
 	test("0x200001 * 2.33", Fixed(0x200001) * Fixed(2.33f));
 	test("0x100001 * 4.004", Fixed(0x100001) * Fixed(4.004f));

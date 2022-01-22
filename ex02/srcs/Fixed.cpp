@@ -1,7 +1,9 @@
 #include "Fixed.hpp"
 #include <iostream>
 #include <cmath>
-const std::string	Fixed::OVERFLOW_ERROR_MSG = "Error: Integer overflow occurred";
+#include <climits>
+
+const std::string	Fixed::OVERFLOW_ERROR_MSG = "Error: Overflow occurred";
 
 Fixed::Fixed():
 	raw_value(0)
@@ -10,14 +12,29 @@ Fixed::Fixed():
 
 Fixed::Fixed(const int i_num)
 {
-	this->setRawBits(i_num << this->frac_bit);
+	if (i_num < INT_MIN_FOR_FIXED || INT_MAX_FOR_FIXED < i_num)
+	{
+		Fixed::print_overflow_error();
+		this->setRawBits(0);
+	}
+	else
+		this->setRawBits(i_num << this->frac_bit);
 }
 
 Fixed::Fixed(const float f_num)
 {
-	float	f_val = f_num;
-	f_val *= 1 << this->frac_bit;
-	this->setRawBits(static_cast<int>(roundf(f_val)));
+	if (f_num < static_cast<float>(INT_MIN_FOR_FIXED)
+		|| static_cast<float>(INT_MAX_FOR_FIXED) < f_num)
+	{
+		Fixed::print_overflow_error();
+		this->setRawBits(0);
+	}
+	else
+	{
+		float	f_val = f_num;
+		f_val *= 1 << this->frac_bit;
+		this->setRawBits(static_cast<int>(roundf(f_val)));
+	}
 }
 
 Fixed::Fixed(const Fixed &fixed)
@@ -77,7 +94,12 @@ Fixed
 	Fixed::operator+(const Fixed &rhs) const
 {
 	Fixed	tmp;
-	tmp.setRawBits(this->getRawBits() + rhs.getRawBits());
+	if (rhs.getRawBits() > 0 && this->getRawBits() > INT_MAX - rhs.getRawBits())
+		Fixed::print_overflow_error();
+	else if (rhs.getRawBits() < 0 && this->getRawBits() < INT_MIN - rhs.getRawBits())
+		Fixed::print_overflow_error();
+	else
+		tmp.setRawBits(this->getRawBits() + rhs.getRawBits());
 	return (tmp);
 }
 
@@ -85,19 +107,32 @@ Fixed
 	Fixed::operator-(const Fixed &rhs) const
 {
 	Fixed	tmp;
-	tmp.setRawBits(this->getRawBits() - rhs.getRawBits());
+	if (rhs.getRawBits() > 0 && this->getRawBits() < INT_MIN + rhs.getRawBits())
+		Fixed::print_overflow_error();
+	else if (rhs.getRawBits() < 0 && this->getRawBits() > INT_MAX + rhs.getRawBits())
+		Fixed::print_overflow_error();
+	else
+		tmp.setRawBits(this->getRawBits() - rhs.getRawBits());
 	return (tmp);
 }
 
 Fixed
 	Fixed::operator*(const Fixed &rhs) const
 {
-	Fixed	tmp;
-	long long	new_raw_value = static_cast<long long>(this->getRawBits()) * \
-	static_cast<long long>(rhs.getRawBits());
+	Fixed		tmp;
+	int			lhs_value = this->getRawBits();
+	int			rhs_value = rhs.getRawBits();
+	long long	new_raw_value = static_cast<long long>(lhs_value) * \
+	static_cast<long long>(rhs_value);
 	if (new_raw_value < 0 && new_raw_value & EIGHT_BIT_MASK)
 		new_raw_value += 1 << this->frac_bit;
 	new_raw_value = new_raw_value >> this->frac_bit;
+	if (new_raw_value < static_cast<long long>(INT_MIN)
+		|| static_cast<long long>(INT_MAX) < new_raw_value)
+	{
+		Fixed::print_overflow_error();
+		return (tmp);
+	}
 	tmp.setRawBits(static_cast<int>(new_raw_value));
 	return (tmp);
 }
@@ -119,7 +154,15 @@ Fixed
 Fixed
 	&Fixed::operator++()
 {
-	++(this->raw_value);
+	int	current_value = this->getRawBits();
+	if (current_value < INT_MAX)
+		++current_value;
+	else
+	{
+		Fixed::print_overflow_error();
+		current_value = 0;
+	}
+	this->setRawBits(current_value);
 	return (*this);
 }
 
@@ -134,7 +177,15 @@ Fixed
 Fixed
 	&Fixed::operator--()
 {
-	--(this->raw_value);
+	int	current_value = this->getRawBits();
+	if (INT_MIN < current_value)
+		--(current_value);
+	else
+	{
+		Fixed::print_overflow_error();
+		current_value = 0;
+	}
+	this->setRawBits(current_value);
 	return (*this);
 }
 
@@ -211,4 +262,10 @@ std::ostream
 {
 	os << fixed.toFloat();
 	return (os);
+}
+
+void
+	Fixed::print_overflow_error()
+{
+	std::cerr << Fixed::OVERFLOW_ERROR_MSG << std::endl;
 }
