@@ -18,8 +18,12 @@ class Fixed
 		int		toInt(void) const;
 		static const int	BASE = 2;
 	private:
-		int					raw_value;
-		static const int	frac_bit = 8;
+		int							raw_value;
+		static const int			frac_bit = 8;
+		static const int			INT_MAX_FOR_FIXED = INT_MAX >> frac_bit;
+		static const int			INT_MIN_FOR_FIXED = INT_MIN >> frac_bit;
+		static const std::string	OVERFLOW_ERROR_MSG;
+		static void					print_overflow_error();
 };
 
 std::ostream &operator<<(std::ostream &os, const Fixed &fixed);

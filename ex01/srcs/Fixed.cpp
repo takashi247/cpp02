@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 
+const std::string	Fixed::OVERFLOW_ERROR_MSG = "Error: Overflow occurred";
+
 Fixed::Fixed():
 	raw_value(0)
 {
@@ -11,15 +13,30 @@ Fixed::Fixed():
 Fixed::Fixed(const int i_num)
 {
 	std::cout << "Int constructor constructor called" << std::endl;
-	this->setRawBits(i_num << this->frac_bit);
+	if (i_num < INT_MIN_FOR_FIXED || INT_MAX_FOR_FIXED < i_num)
+	{
+		Fixed::print_overflow_error();
+		this->setRawBits(0);
+	}
+	else
+		this->setRawBits(i_num << this->frac_bit);
 }
 
 Fixed::Fixed(const float f_num)
 {
 	std::cout << "Float constructor called" << std::endl;
-	float	f_val = f_num;
-	f_val *= 1 << this->frac_bit;
-	this->setRawBits(static_cast<int>(roundf(f_val)));
+	if (f_num < static_cast<float>(INT_MIN_FOR_FIXED)
+		|| static_cast<float>(INT_MAX_FOR_FIXED) < f_num)
+	{
+		Fixed::print_overflow_error();
+		this->setRawBits(0);
+	}
+	else
+	{
+		float	f_val = f_num;
+		f_val *= 1 << this->frac_bit;
+		this->setRawBits(static_cast<int>(roundf(f_val)));
+	}
 }
 
 Fixed::Fixed(const Fixed &fixed)
@@ -70,4 +87,10 @@ std::ostream
 {
 	os << fixed.toFloat();
 	return (os);
+}
+
+void
+	Fixed::print_overflow_error()
+{
+	std::cerr << Fixed::OVERFLOW_ERROR_MSG << std::endl;
 }
