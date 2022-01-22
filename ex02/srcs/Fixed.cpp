@@ -93,26 +93,30 @@ bool
 Fixed
 	Fixed::operator+(const Fixed &rhs) const
 {
-	Fixed	tmp;
-	if (rhs.getRawBits() > 0 && this->getRawBits() > INT_MAX - rhs.getRawBits())
+	Fixed		tmp;
+	const int	lhs_value = this->getRawBits();
+	const int	rhs_value = rhs.getRawBits();
+	if (rhs_value > 0 && lhs_value > INT_MAX - rhs_value)
 		Fixed::print_overflow_error();
-	else if (rhs.getRawBits() < 0 && this->getRawBits() < INT_MIN - rhs.getRawBits())
+	else if (rhs_value < 0 && lhs_value < INT_MIN - rhs_value)
 		Fixed::print_overflow_error();
 	else
-		tmp.setRawBits(this->getRawBits() + rhs.getRawBits());
+		tmp.setRawBits(lhs_value + rhs_value);
 	return (tmp);
 }
 
 Fixed
 	Fixed::operator-(const Fixed &rhs) const
 {
-	Fixed	tmp;
-	if (rhs.getRawBits() > 0 && this->getRawBits() < INT_MIN + rhs.getRawBits())
+	Fixed		tmp;
+	const int	lhs_value = this->getRawBits();
+	const int	rhs_value = rhs.getRawBits();
+	if (rhs_value > 0 && lhs_value < INT_MIN + rhs_value)
 		Fixed::print_overflow_error();
-	else if (rhs.getRawBits() < 0 && this->getRawBits() > INT_MAX + rhs.getRawBits())
+	else if (rhs_value < 0 && lhs_value > INT_MAX + rhs_value)
 		Fixed::print_overflow_error();
 	else
-		tmp.setRawBits(this->getRawBits() - rhs.getRawBits());
+		tmp.setRawBits(lhs_value - rhs_value);
 	return (tmp);
 }
 
@@ -140,13 +144,15 @@ Fixed
 Fixed
 	Fixed::operator/(const Fixed &rhs) const
 {
-	Fixed	tmp;
-	if (rhs.getRawBits() != 0)
+	Fixed		tmp;
+	const int	lhs_value = this->getRawBits();
+	const int	rhs_value = rhs.getRawBits();
+	if (rhs_value != 0)
 	{
-		if (rhs.getRawBits() & EIGHT_BIT_MASK)
-			tmp.setRawBits((this->getRawBits() << this->frac_bit) / rhs.getRawBits());
+		if (rhs_value & EIGHT_BIT_MASK)
+			tmp.setRawBits((lhs_value << this->frac_bit) / rhs_value);
 		else
-			tmp.setRawBits(this->getRawBits() / (rhs.getRawBits() >> this->frac_bit));
+			tmp.setRawBits(lhs_value / (rhs_value >> this->frac_bit));
 	}
 	return (tmp);
 }
