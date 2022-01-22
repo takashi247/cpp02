@@ -15,8 +15,7 @@ Fixed::Fixed(const int i_num)
 Fixed::Fixed(const float f_num)
 {
 	float	f_val = f_num;
-	for (int i = 0; i < this->frac_bit; i++)
-		f_val *= BASE;
+	f_num *= 1 << this->frac_bit;
 	this->setRawBits(static_cast<int>(roundf(f_val)));
 }
 
