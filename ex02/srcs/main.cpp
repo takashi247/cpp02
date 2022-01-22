@@ -15,6 +15,7 @@ int
 {
 	Fixed		a;
 	Fixed const	b( Fixed( 5.05f ) * Fixed( 2 ));
+	Fixed		c;
 
 	std::cout << a << std::endl;
 	std::cout << ++a << std::endl;
@@ -24,6 +25,8 @@ int
 
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
+
+	std::cout << std::endl;
 
 	a.setRawBits(INT_MAX);
 	std::cout << a << std::endl;
@@ -43,6 +46,18 @@ int
 	std::cout << a << std::endl;
 	a = Fixed(1 << 23);
 	std::cout << a << std::endl;
+
+	std::cout << std::endl;
+
+	a.setRawBits(INT_MAX);
+	c.setRawBits(INT_MAX);
+	test("(raw_bit == INT_MAX) * (raw_bit == INT_MAX)", a * c);
+	a.setRawBits(INT_MAX);
+	c.setRawBits(INT_MIN);
+	test("(raw_bit == INT_MAX) * (raw_bit == INT_MIN)", a * c);
+	a.setRawBits(INT_MIN);
+	c.setRawBits(INT_MIN);
+	test("(raw_bit == INT_MIN) * (raw_bit == INT_MIN)", a * c);
 
 	std::cout << std::endl;
 
