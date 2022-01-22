@@ -11,7 +11,7 @@ class Fixed
 		Fixed(const float f_num);
 		Fixed(const Fixed &fixed);
 		~Fixed();
-		Fixed& operator=(const Fixed &fixed);
+		Fixed	&operator=(const Fixed &fixed);
 		int		getRawBits() const;
 		void	setRawBits(int const raw);
 		float	toFloat(void) const;

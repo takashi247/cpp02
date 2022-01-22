@@ -49,7 +49,7 @@ Fixed
 	&Fixed::operator=(const Fixed &fixed)
 {
 	if (this != &fixed)
-		this->raw_value = fixed.getRawBits();
+		this->setRawBits(fixed.getRawBits());
 	return *this;
 }
 

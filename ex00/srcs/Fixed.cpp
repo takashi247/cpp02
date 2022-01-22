@@ -18,11 +18,12 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed& Fixed::operator=(const Fixed &fixed)
+Fixed
+	&Fixed::operator=(const Fixed &fixed)
 {
 	std::cout << "Assignation operator called" << std::endl;
 	if (this != &fixed)
-		this->raw_value = fixed.getRawBits();
+		this->setRawBits(fixed.getRawBits());
 	return *this;
 }
 
