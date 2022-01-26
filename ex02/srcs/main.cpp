@@ -92,11 +92,15 @@ int
 	test("10.004 / -1", Fixed(10.004f) / Fixed(-1));
 	test("10.004 * -2", Fixed(10.004f) * Fixed(-2));
 	test("10.004 / -2", Fixed(10.004f) / Fixed(-2));
+	test("10.004 / 3.87", Fixed(10.004f) / Fixed(3.87f));
+	test("10.004 / -3.87", Fixed(10.004f) / Fixed(-3.87f));
 	test("10.004 * -0.8", Fixed(10.004f) * Fixed(-0.8f));
 	test("-10.004 * 1", Fixed(-10.004f) * Fixed(1));
 	test("-10.004 / 1", Fixed(-10.004f) / Fixed(1));
 	test("-10.004 * 2", Fixed(-10.004f) * Fixed(2));
 	test("-10.004 / 2", Fixed(-10.004f) / Fixed(2));
+	test("-10.004 / 3.87", Fixed(-10.004f) / Fixed(3.87f));
+	test("-10.004 / -3.87", Fixed(-10.004f) / Fixed(-3.87f));
 	test("-10.004 * 0.8", Fixed(-10.004f) * Fixed(0.8f));
 	test("1.1 * -0.3", Fixed(1.1f) * Fixed(-0.3f));
 	test("1.1 * 0.3", Fixed(1.1f) * Fixed(0.3f));
@@ -108,6 +112,10 @@ int
 	test("0.1 - -1.3", Fixed(0.1f) - Fixed(-1.3f));
 	test("10 - 5.33", Fixed(10) - Fixed(5.33f));
 	test("10 + 5.33", Fixed(10) + Fixed(5.33f));
+	test("INT_MAX >> 8 / 1000.123", Fixed(INT_MAX >> 8) / Fixed(1000.123f));
+	test("INT_MAX >> 8 / -1000.123", Fixed(INT_MAX >> 8) / Fixed(-1000.123f));
+	test("INT_MAX >> 8 / 1", Fixed(INT_MAX >> 8) / Fixed(1));
+	test("INT_MAX >> 8 / -1", Fixed(INT_MAX >> 8) / Fixed(-1));
 	test("INT_MAX >> 8 + 1", Fixed(INT_MAX >> 8) + Fixed(1));
 	test("INT_MIN >> 8 - 1", Fixed(INT_MIN >> 8) - Fixed(1));
 	test("INT_MAX >> 8 - -1", Fixed(INT_MAX >> 8) - Fixed(-1));

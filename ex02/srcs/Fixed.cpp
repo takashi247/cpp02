@@ -144,15 +144,17 @@ Fixed
 Fixed
 	Fixed::operator/(const Fixed &rhs) const
 {
-	Fixed		tmp;
-	const int	lhs_value = this->getRawBits();
-	const int	rhs_value = rhs.getRawBits();
+	Fixed			tmp;
+	const long long	lhs_value = static_cast<long long>(this->getRawBits());
+	const long long	rhs_value = static_cast<long long>(rhs.getRawBits());
+	long long		new_value;
 	if (rhs_value != 0)
 	{
 		if (rhs_value & EIGHT_BIT_MASK)
-			tmp.setRawBits((lhs_value << this->frac_bit) / rhs_value);
+			new_value = (lhs_value << this->frac_bit) / rhs_value;
 		else
-			tmp.setRawBits(lhs_value / (rhs_value >> this->frac_bit));
+			new_value = lhs_value / (rhs_value >> this->frac_bit);
+		tmp.setRawBits(static_cast<int>(new_value));
 	}
 	return (tmp);
 }
