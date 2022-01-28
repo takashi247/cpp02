@@ -4,6 +4,7 @@
 #include <climits>
 
 const std::string	Fixed::OVERFLOW_ERROR_MSG = "Error: Overflow occurred";
+const std::string	Fixed::DIVISION_BY_ZERO_MSG = "Error: Division by zero occurred";
 
 Fixed::Fixed():
 	raw_value(0)
@@ -126,13 +127,13 @@ Fixed
 	Fixed		tmp;
 	int			lhs_value = this->getRawBits();
 	int			rhs_value = rhs.getRawBits();
-	long long	new_raw_value = static_cast<long long>(lhs_value) * \
-	static_cast<long long>(rhs_value);
+	long	new_raw_value = static_cast<long>(lhs_value) * \
+	static_cast<long>(rhs_value);
 	if (new_raw_value < 0 && new_raw_value & EIGHT_BIT_MASK)
 		new_raw_value += 1 << this->frac_bit;
 	new_raw_value = new_raw_value >> this->frac_bit;
-	if (new_raw_value < static_cast<long long>(INT_MIN)
-		|| static_cast<long long>(INT_MAX) < new_raw_value)
+	if (new_raw_value < static_cast<long>(INT_MIN)
+		|| static_cast<long>(INT_MAX) < new_raw_value)
 	{
 		Fixed::print_overflow_error();
 		return (tmp);
@@ -145,10 +146,12 @@ Fixed
 	Fixed::operator/(const Fixed &rhs) const
 {
 	Fixed			tmp;
-	const long long	lhs_value = static_cast<long long>(this->getRawBits());
-	const long long	rhs_value = static_cast<long long>(rhs.getRawBits());
-	long long		new_value;
-	if (rhs_value != 0)
+	const long	lhs_value = static_cast<long>(this->getRawBits());
+	const long	rhs_value = static_cast<long>(rhs.getRawBits());
+	long		new_value;
+	if (rhs_value == 0)
+		std::cout << Fixed::DIVISION_BY_ZERO_MSG << std::endl;
+	else
 	{
 		if (rhs_value & EIGHT_BIT_MASK)
 			new_value = (lhs_value << this->frac_bit) / rhs_value;

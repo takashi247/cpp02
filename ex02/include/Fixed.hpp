@@ -41,6 +41,7 @@ class Fixed
 		static const int			INT_MAX_FOR_FIXED = INT_MAX >> frac_bit;
 		static const int			INT_MIN_FOR_FIXED = INT_MIN >> frac_bit;
 		static const std::string	OVERFLOW_ERROR_MSG;
+		static const std::string	DIVISION_BY_ZERO_MSG;
 		static void					print_overflow_error();
 };
 
